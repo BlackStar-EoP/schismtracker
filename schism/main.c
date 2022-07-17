@@ -49,13 +49,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include <unistd.h>
+/* #include <unistd.h> /* BlackStar-EoP */
 
 #ifndef WIN32
 # include <signal.h>
 #endif
 
-#include <getopt.h>
+/* #include <getopt.h>/* BlackStar-EoP */
 
 #if !defined(__amigaos4__) && !defined(GEKKO)
 # define ENABLE_HOOKS 1
@@ -256,211 +256,211 @@ enum {
 #define USAGE "Usage: %s [OPTIONS] [DIRECTORY] [FILE]\n"
 
 // Remember to update the manpage when changing the command-line options!
-
+/* BlackStar-EoP Not dealing with this right now*/
 static void parse_options(int argc, char **argv)
 {
-	struct option long_options[] = {
-		{"audio-driver", 1, NULL, O_SDL_AUDIODRIVER},
-		{"video-driver", 1, NULL, O_SDL_VIDEODRIVER},
-
-		{"video-yuvlayout", 1, NULL, O_VIDEO_YUVLAYOUT},
-		{"video-size", 1, NULL, O_VIDEO_RESOLUTION},
-		{"video-stretch", 0, NULL, O_VIDEO_STRETCH},
-		{"no-video-stretch", 0, NULL, O_NO_VIDEO_STRETCH},
-#if USE_OPENGL
-		{"video-gl-path", 1, NULL, O_VIDEO_GLPATH},
-#endif
-		{"video-depth", 1, NULL, O_VIDEO_DEPTH},
-#if HAVE_SYS_KD_H
-		{"video-fb-device", 1, NULL, O_VIDEO_FBDEV},
-#endif
-#if USE_NETWORK
-		{"network", 0, NULL, O_NETWORK},
-		{"no-network", 0, NULL, O_NO_NETWORK},
-#endif
-		{"classic", 0, NULL, O_CLASSIC_MODE},
-		{"no-classic", 0, NULL, O_NO_CLASSIC_MODE},
-#ifdef USE_X11
-		{"display", 1, NULL, O_DISPLAY},
-#endif
-		{"fullscreen", 0, NULL, O_FULLSCREEN},
-		{"no-fullscreen", 0, NULL, O_NO_FULLSCREEN},
-		{"play", 0, NULL, O_PLAY},
-		{"no-play", 0, NULL, O_NO_PLAY},
-		{"diskwrite", 1, NULL, O_DISKWRITE},
-		{"font-editor", 0, NULL, O_FONTEDIT},
-		{"no-font-editor", 0, NULL, O_NO_FONTEDIT},
-#if ENABLE_HOOKS
-		{"hooks", 0, NULL, O_HOOKS},
-		{"no-hooks", 0, NULL, O_NO_HOOKS},
-#endif
-		{"debug", 1, NULL, O_DEBUG},
-		{"version", 0, NULL, O_VERSION},
-		{"help", 0, NULL, O_HELP},
-		{NULL, 0, NULL, 0},
-	};
-	int opt;
-
-	while ((opt = getopt_long(argc, argv, SHORT_OPTIONS, long_options, NULL)) != -1) {
-		switch (opt) {
-		case O_SDL_AUDIODRIVER:
-			audio_driver = str_dup(optarg);
-			break;
-		case O_SDL_VIDEODRIVER:
-			video_driver = str_dup(optarg);
-			break;
-
-		// FIXME remove all these env vars, and put these things into a global struct or something instead
-
-		case O_VIDEO_YUVLAYOUT:
-			put_env_var("SCHISM_YUVLAYOUT", optarg);
-			break;
-		case O_VIDEO_RESOLUTION:
-			put_env_var("SCHISM_VIDEO_RESOLUTION", optarg);
-			break;
-		case O_VIDEO_STRETCH:
-			put_env_var("SCHISM_VIDEO_ASPECT", "full");
-			break;
-		case O_NO_VIDEO_STRETCH:
-			put_env_var("SCHISM_VIDEO_ASPECT", "fixed");
-			break;
-#if USE_OPENGL
-		case O_VIDEO_GLPATH:
-			put_env_var("SDL_VIDEO_GL_DRIVER", optarg);
-			break;
-#endif
-		case O_VIDEO_DEPTH:
-			put_env_var("SCHISM_VIDEO_DEPTH", optarg);
-			break;
-#if HAVE_SYS_KD_H
-		case O_VIDEO_FBDEV:
-			put_env_var("SDL_FBDEV", optarg);
-			break;
-#endif
-#if USE_NETWORK
-		case O_NETWORK:
-			startup_flags |= SF_NETWORK;
-			break;
-		case O_NO_NETWORK:
-			startup_flags &= ~SF_NETWORK;
-			break;
-#endif
-		case O_CLASSIC_MODE:
-			startup_flags |= SF_CLASSIC;
-			did_classic = 1;
-			break;
-		case O_NO_CLASSIC_MODE:
-			startup_flags &= ~SF_CLASSIC;
-			did_classic = 1;
-			break;
-
-		case O_DEBUG:
-			put_env_var("SCHISM_DEBUG", optarg);
-			break;
-#ifdef USE_X11
-		case O_DISPLAY:
-			put_env_var("DISPLAY", optarg);
-			break;
-#endif
-		case O_FULLSCREEN:
-			video_fullscreen(1);
-			did_fullscreen = 1;
-			break;
-		case O_NO_FULLSCREEN:
-			video_fullscreen(0);
-			did_fullscreen = 1;
-			break;
-		case O_PLAY:
-			startup_flags |= SF_PLAY;
-			break;
-		case O_NO_PLAY:
-			startup_flags &= ~SF_PLAY;
-			break;
-		case O_FONTEDIT:
-			startup_flags |= SF_FONTEDIT;
-			break;
-		case O_NO_FONTEDIT:
-			startup_flags &= ~SF_FONTEDIT;
-			break;
-		case O_DISKWRITE:
-			diskwrite_to = optarg;
-			break;
-#if ENABLE_HOOKS
-		case O_HOOKS:
-			startup_flags |= SF_HOOKS;
-			break;
-		case O_NO_HOOKS:
-			startup_flags &= ~SF_HOOKS;
-			break;
-#endif
-		case O_VERSION:
-			puts(schism_banner(0));
-			puts(ver_short_copyright);
-			exit(0);
-		case O_HELP:
-			// XXX try to keep this stuff to one screen (78x20 or so)
-			printf(USAGE, argv[0]);
-			printf(
-				"  -a, --audio-driver=DRIVER\n"
-				"  -v, --video-driver=DRIVER\n"
-				"      --video-yuvlayout=LAYOUT\n"
-				"      --video-size=WIDTHxHEIGHT\n"
-				"      --video-stretch (--no-video-stretch)\n"
-#if USE_OPENGL
-				"      --video-gl-path=/path/to/opengl.so\n"
-#endif
-				"      --video-depth=DEPTH\n"
-#if HAVE_SYS_KD_H
-				"      --video-fb-device=/dev/fb0\n"
-#endif
-#if USE_NETWORK
-				"      --network (--no-network)\n"
-#endif
-				"      --classic (--no-classic)\n"
-#ifdef USE_X11
-				"      --display=DISPLAYNAME\n"
-#endif
-				"  -f, --fullscreen (-F, --no-fullscreen)\n"
-				"  -p, --play (-P, --no-play)\n"
-				"      --diskwrite=FILENAME\n"
-				"      --font-editor (--no-font-editor)\n"
-#if ENABLE_HOOKS
-				"      --hooks (--no-hooks)\n"
-#endif
-				//"      --debug=OPS\n"
-				"      --version\n"
-				"  -h, --help\n"
-			);
-			printf("Refer to the documentation for complete usage details.\n");
-			exit(0);
-		case '?': // unknown option
-			fprintf(stderr, USAGE, argv[0]);
-			exit(2);
-		default: // unhandled but known option
-			fprintf(stderr, "how did this get here i am not good with computer\n");
-			exit(2);
-		}
-	}
-
-	char *cwd = get_current_directory();
-	for (; optind < argc; optind++) {
-		char *arg = argv[optind];
-		char *tmp = dmoz_path_concat(cwd, arg);
-		if (!tmp) {
-			perror(arg);
-			continue;
-		}
-		char *norm = dmoz_path_normal(tmp);
-		free(tmp);
-		if (is_directory(arg)) {
-			free(initial_dir);
-			initial_dir = norm;
-		} else {
-			free(initial_song);
-			initial_song = norm;
-		}
-	}
-	free(cwd);
+//	struct option long_options[] = {
+//		{"audio-driver", 1, NULL, O_SDL_AUDIODRIVER},
+//		{"video-driver", 1, NULL, O_SDL_VIDEODRIVER},
+//
+//		{"video-yuvlayout", 1, NULL, O_VIDEO_YUVLAYOUT},
+//		{"video-size", 1, NULL, O_VIDEO_RESOLUTION},
+//		{"video-stretch", 0, NULL, O_VIDEO_STRETCH},
+//		{"no-video-stretch", 0, NULL, O_NO_VIDEO_STRETCH},
+//#if USE_OPENGL
+//		{"video-gl-path", 1, NULL, O_VIDEO_GLPATH},
+//#endif
+//		{"video-depth", 1, NULL, O_VIDEO_DEPTH},
+//#if HAVE_SYS_KD_H
+//		{"video-fb-device", 1, NULL, O_VIDEO_FBDEV},
+//#endif
+//#if USE_NETWORK
+//		{"network", 0, NULL, O_NETWORK},
+//		{"no-network", 0, NULL, O_NO_NETWORK},
+//#endif
+//		{"classic", 0, NULL, O_CLASSIC_MODE},
+//		{"no-classic", 0, NULL, O_NO_CLASSIC_MODE},
+//#ifdef USE_X11
+//		{"display", 1, NULL, O_DISPLAY},
+//#endif
+//		{"fullscreen", 0, NULL, O_FULLSCREEN},
+//		{"no-fullscreen", 0, NULL, O_NO_FULLSCREEN},
+//		{"play", 0, NULL, O_PLAY},
+//		{"no-play", 0, NULL, O_NO_PLAY},
+//		{"diskwrite", 1, NULL, O_DISKWRITE},
+//		{"font-editor", 0, NULL, O_FONTEDIT},
+//		{"no-font-editor", 0, NULL, O_NO_FONTEDIT},
+//#if ENABLE_HOOKS
+//		{"hooks", 0, NULL, O_HOOKS},
+//		{"no-hooks", 0, NULL, O_NO_HOOKS},
+//#endif
+//		{"debug", 1, NULL, O_DEBUG},
+//		{"version", 0, NULL, O_VERSION},
+//		{"help", 0, NULL, O_HELP},
+//		{NULL, 0, NULL, 0},
+//	};
+//	int opt;
+//
+//	while ((opt = getopt_long(argc, argv, SHORT_OPTIONS, long_options, NULL)) != -1) {
+//		switch (opt) {
+//		case O_SDL_AUDIODRIVER:
+//			audio_driver = str_dup(optarg);
+//			break;
+//		case O_SDL_VIDEODRIVER:
+//			video_driver = str_dup(optarg);
+//			break;
+//
+//		// FIXME remove all these env vars, and put these things into a global struct or something instead
+//
+//		case O_VIDEO_YUVLAYOUT:
+//			put_env_var("SCHISM_YUVLAYOUT", optarg);
+//			break;
+//		case O_VIDEO_RESOLUTION:
+//			put_env_var("SCHISM_VIDEO_RESOLUTION", optarg);
+//			break;
+//		case O_VIDEO_STRETCH:
+//			put_env_var("SCHISM_VIDEO_ASPECT", "full");
+//			break;
+//		case O_NO_VIDEO_STRETCH:
+//			put_env_var("SCHISM_VIDEO_ASPECT", "fixed");
+//			break;
+//#if USE_OPENGL
+//		case O_VIDEO_GLPATH:
+//			put_env_var("SDL_VIDEO_GL_DRIVER", optarg);
+//			break;
+//#endif
+//		case O_VIDEO_DEPTH:
+//			put_env_var("SCHISM_VIDEO_DEPTH", optarg);
+//			break;
+//#if HAVE_SYS_KD_H
+//		case O_VIDEO_FBDEV:
+//			put_env_var("SDL_FBDEV", optarg);
+//			break;
+//#endif
+//#if USE_NETWORK
+//		case O_NETWORK:
+//			startup_flags |= SF_NETWORK;
+//			break;
+//		case O_NO_NETWORK:
+//			startup_flags &= ~SF_NETWORK;
+//			break;
+//#endif
+//		case O_CLASSIC_MODE:
+//			startup_flags |= SF_CLASSIC;
+//			did_classic = 1;
+//			break;
+//		case O_NO_CLASSIC_MODE:
+//			startup_flags &= ~SF_CLASSIC;
+//			did_classic = 1;
+//			break;
+//
+//		case O_DEBUG:
+//			put_env_var("SCHISM_DEBUG", optarg);
+//			break;
+//#ifdef USE_X11
+//		case O_DISPLAY:
+//			put_env_var("DISPLAY", optarg);
+//			break;
+//#endif
+//		case O_FULLSCREEN:
+//			video_fullscreen(1);
+//			did_fullscreen = 1;
+//			break;
+//		case O_NO_FULLSCREEN:
+//			video_fullscreen(0);
+//			did_fullscreen = 1;
+//			break;
+//		case O_PLAY:
+//			startup_flags |= SF_PLAY;
+//			break;
+//		case O_NO_PLAY:
+//			startup_flags &= ~SF_PLAY;
+//			break;
+//		case O_FONTEDIT:
+//			startup_flags |= SF_FONTEDIT;
+//			break;
+//		case O_NO_FONTEDIT:
+//			startup_flags &= ~SF_FONTEDIT;
+//			break;
+//		case O_DISKWRITE:
+//			diskwrite_to = optarg;
+//			break;
+//#if ENABLE_HOOKS
+//		case O_HOOKS:
+//			startup_flags |= SF_HOOKS;
+//			break;
+//		case O_NO_HOOKS:
+//			startup_flags &= ~SF_HOOKS;
+//			break;
+//#endif
+//		case O_VERSION:
+//			puts(schism_banner(0));
+//			puts(ver_short_copyright);
+//			exit(0);
+//		case O_HELP:
+//			// XXX try to keep this stuff to one screen (78x20 or so)
+//			printf(USAGE, argv[0]);
+//			printf(
+//				"  -a, --audio-driver=DRIVER\n"
+//				"  -v, --video-driver=DRIVER\n"
+//				"      --video-yuvlayout=LAYOUT\n"
+//				"      --video-size=WIDTHxHEIGHT\n"
+//				"      --video-stretch (--no-video-stretch)\n"
+//#if USE_OPENGL
+//				"      --video-gl-path=/path/to/opengl.so\n"
+//#endif
+//				"      --video-depth=DEPTH\n"
+//#if HAVE_SYS_KD_H
+//				"      --video-fb-device=/dev/fb0\n"
+//#endif
+//#if USE_NETWORK
+//				"      --network (--no-network)\n"
+//#endif
+//				"      --classic (--no-classic)\n"
+//#ifdef USE_X11
+//				"      --display=DISPLAYNAME\n"
+//#endif
+//				"  -f, --fullscreen (-F, --no-fullscreen)\n"
+//				"  -p, --play (-P, --no-play)\n"
+//				"      --diskwrite=FILENAME\n"
+//				"      --font-editor (--no-font-editor)\n"
+//#if ENABLE_HOOKS
+//				"      --hooks (--no-hooks)\n"
+//#endif
+//				//"      --debug=OPS\n"
+//				"      --version\n"
+//				"  -h, --help\n"
+//			);
+//			printf("Refer to the documentation for complete usage details.\n");
+//			exit(0);
+//		case '?': // unknown option
+//			fprintf(stderr, USAGE, argv[0]);
+//			exit(2);
+//		default: // unhandled but known option
+//			fprintf(stderr, "how did this get here i am not good with computer\n");
+//			exit(2);
+//		}
+//	}
+//
+//	char *cwd = get_current_directory();
+//	for (; optind < argc; optind++) {
+//		char *arg = argv[optind];
+//		char *tmp = dmoz_path_concat(cwd, arg);
+//		if (!tmp) {
+//			perror(arg);
+//			continue;
+//		}
+//		char *norm = dmoz_path_normal(tmp);
+//		free(tmp);
+//		if (is_directory(arg)) {
+//			free(initial_dir);
+//			initial_dir = norm;
+//		} else {
+//			free(initial_song);
+//			initial_song = norm;
+//		}
+//	}
+//	free(cwd);
 }
 
 /* --------------------------------------------------------------------- */
@@ -563,7 +563,7 @@ static void event_loop(void)
 	int sawrep;
 	char *debug_s;
 	int fix_numlock_key;
-	struct key_event kk;
+	struct key_event kk = { 0 };
 
 	fix_numlock_key = status.fix_numlock_setting;
 
@@ -1033,7 +1033,7 @@ int main(int argc, char **argv)
 
 	video_fullscreen(0);
 
-	tzset(); // localtime_r wants this
+	_tzset(); // localtime_r wants this
 	srand(time(NULL));
 	parse_options(argc, argv); /* shouldn't this be like, first? */
 

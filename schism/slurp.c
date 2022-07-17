@@ -34,7 +34,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
 
@@ -83,7 +82,7 @@ static int _slurp_stdio_pipe(slurp_t * t, int fd)
 	int chunks = 0;
 
 	t->data = NULL;
-	fp = fdopen(dup(fd), "rb");
+	fp = _fdopen(dup(fd), "rb");
 	if (fp == NULL)
 		return 0;
 
@@ -128,7 +127,7 @@ static int _slurp_stdio(slurp_t * t, int fd)
 		return _slurp_stdio_pipe(t, fd);
 	}
 
-	fp = fdopen(dup(fd), "rb");
+	fp = _fdopen(dup(fd), "rb");
 
 	if (!fp)
 		return 0;
@@ -314,7 +313,8 @@ size_t slurp_peek(slurp_t *t, void *ptr, size_t count)
 		// short read -- fill in any extra bytes with zeroes
 		size_t tail = count - bytesleft;
 		count = bytesleft;
-		memset(ptr + count, 0, tail);
+		/* BlackStar-EoP Please do NOT use void pointers. */
+		memset((uint8_t)ptr + count, 0, tail);
 	}
 	if (count)
 		memcpy(ptr, t->data + t->pos, count);

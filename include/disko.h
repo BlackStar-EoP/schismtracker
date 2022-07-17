@@ -23,6 +23,7 @@
 #ifndef __disko_h
 #define __disko_h
 
+#define PATH_MAX 256u /* BlackStar-EoP */
 #include <sys/types.h>
 
 // hurd doesn't have limits.h

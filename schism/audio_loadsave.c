@@ -47,7 +47,7 @@
 #include <assert.h>
 
 // ------------------------------------------------------------------------
-
+#define PATH_MAX 256 /* BlackStar-EoP */
 char song_filename[PATH_MAX + 1];
 char song_basename[NAME_MAX + 1];
 
@@ -338,7 +338,7 @@ static void _save_it_instrument(int n, disko_t *fp, int iti_file)
 {
 	n++; // FIXME: this is dumb; really all the numbering should be one-based to make it simple
 
-	struct it_instrument iti = {};
+	struct it_instrument iti = { 0u }; /* BlackStar-EoP */
 	song_instrument_t *i = current_song->instruments[n];
 
 	if (!i)
@@ -495,8 +495,8 @@ static void _save_it_instrument(int n, disko_t *fp, int iti_file)
 static void _save_it_pattern(disko_t *fp, song_note_t *pat, int patsize)
 {
 	song_note_t *noteptr = pat;
-	song_note_t lastnote[64] = {};
-	uint8_t initmask[64] = {};
+	song_note_t lastnote[64] = { 0u }; /* BlackStar-EoP */
+	uint8_t initmask[64] = { 0u };  /* BlackStar-EoP */
 	uint8_t lastmask[64];
 	unsigned short pos = 0;
 	uint8_t data[65536];
@@ -603,7 +603,7 @@ static void _save_it_pattern(disko_t *fp, song_note_t *pat, int patsize)
 // why on earth isn't this using the 'song' parameter? will finding this out hurt my head?
 static int _save_it(disko_t *fp, UNUSED song_t *song)
 {
-	struct it_file hdr = {};
+	struct it_file hdr = { 0u };  /* BlackStar-EoP */
 	int n;
 	int nord, nins, nsmp, npat;
 	int msglen = strlen(current_song->message);
@@ -627,7 +627,7 @@ static int _save_it(disko_t *fp, UNUSED song_t *song)
 	nsmp = csf_get_num_samples(current_song);
 
 	// IT always saves at least one pattern.
-	npat = csf_get_num_patterns(current_song) ?: 1;
+	npat = csf_get_num_patterns(current_song) ? npat : 1;  /* BlackStar-EoP TODO check if npat is correct */
 
 	hdr.id = bswapLE32(0x4D504D49); // IMPM
 	strncpy((char *) hdr.songname, current_song->title, 25);
@@ -713,14 +713,15 @@ static int _save_it(disko_t *fp, UNUSED song_t *song)
 
 	// edit history (see scripts/timestamp.py)
 	// Should™ be fully compatible with Impulse Tracker.
-	struct timeval savetime, elapsed;
+	/* struct timeval savetime, elapsed;  /* BlackStar-EoP */
+	 /* BlackStar-EoP Couldn't care less about time at the moment TODO reinstate */
 	struct tm loadtm;
 	uint16_t h;
 	//x86/x64 compatibility
 	time_t thetime = current_song->editstart.tv_sec;
 	localtime_r(&thetime, &loadtm);
-	gettimeofday(&savetime, NULL);
-	timersub(&savetime, &current_song->editstart, &elapsed);
+	/* gettimeofday(&savetime, NULL);  /* BlackStar-EoP */
+	/* timersub(&savetime, &current_song->editstart, &elapsed); /* BlackStar-EoP */
 
 	// item count
 	h = current_song->histlen + 1;
@@ -737,7 +738,7 @@ static int _save_it(disko_t *fp, UNUSED song_t *song)
 	h = bswapLE16(h);
 	disko_write(fp, &h, 2);
 	// 32-bit DOS tick count (tick = 1/18.2 second; 54945 * 18.2 = 999999 which is Close Enough)
-	uint32_t ticks = elapsed.tv_sec * 182 / 10 + elapsed.tv_usec / 54945;
+	uint32_t ticks = 0u; /* elapsed.tv_sec * 182 / 10 + elapsed.tv_usec / 54945; /* BlackStar-EoP Not sure what this does */
 	ticks = bswapLE32(ticks);
 	disko_write(fp, &ticks, 4);
 
@@ -1096,7 +1097,7 @@ int song_load_instrument_ex(int target, const char *file, const char *libf, int 
 
 	/* 0. delete old samples */
 	if (current_song->instruments[target]) {
-		int sampmap[MAX_SAMPLES] = {};
+		int sampmap[MAX_SAMPLES] = { 0 };
 
 		/* init... */
 		for (unsigned int j = 0; j < 128; j++) {
@@ -1126,7 +1127,7 @@ int song_load_instrument_ex(int target, const char *file, const char *libf, int 
 	}
 
 	if (libf) { /* file is ignored */
-		int sampmap[MAX_SAMPLES] = {};
+		int sampmap[MAX_SAMPLES] = { 0 };
 
 		song_t *xl = song_create_load(libf);
 		if (!xl) {
@@ -1224,7 +1225,7 @@ int song_preload_sample(dmoz_file_t *file)
 int song_load_sample(int n, const char *file)
 {
 	fmt_load_sample_func *load;
-	song_sample_t smp = {};
+	song_sample_t smp = { 0 };
 
 	const char *base = get_basename(file);
 	slurp_t *s = slurp(file, NULL, 0);
@@ -1362,7 +1363,7 @@ int dmoz_read_instrument_library(const char *path, dmoz_filelist_t *flist, UNUSE
 			str_dup(path), str_dup(base), NULL, n);
 		file->title = str_dup(library->instruments[n]->name);
 
-		int count[128] = {};
+		int count[128] = { 0 };
 
 		file->sampsize = 0;
 		file->filesize = 0;

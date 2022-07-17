@@ -168,7 +168,7 @@ static int fontgrep(dmoz_file_t *f)
 static void load_fontlist(void)
 {
 	char *font_dir, *p;
-	struct stat st = {};
+	struct stat st = { 0 };
 
 	dmoz_free(&flist, NULL);
 
@@ -854,17 +854,20 @@ static int fontedit_handle_key(struct key_event * k)
 		if (k->state == KEY_RELEASE)
 			return 1;
 		k->sym += 10;
-		/* fall through */
-	case SDLK_KP1...SDLK_KP9:
-		if (k->state == KEY_RELEASE)
+		/* BlackStar-EoP */
+		if (k->orig_sym >= SDLK_KP1 && k->orig_sym <= SDLK_KP9)
+		{
+			/* fall through */
+			if (k->state == KEY_RELEASE)
+				return 1;
+			n = k->sym - SDLK_KP1;
+			if (k->mod & KMOD_SHIFT)
+				n += 10;
+			palette_load_preset(n);
+			palette_apply();
+			status.flags |= NEED_UPDATE;
 			return 1;
-		n = k->sym - SDLK_KP1;
-		if (k->mod & KMOD_SHIFT)
-			n += 10;
-		palette_load_preset(n);
-		palette_apply();
-		status.flags |= NEED_UPDATE;
-		return 1;
+		}
 	default:
 		break;
 	};
@@ -874,17 +877,20 @@ static int fontedit_handle_key(struct key_event * k)
 		if (k->state == KEY_RELEASE)
 			return 1;
 		k->sym += 10;
-		/* fall through */
-	case '1'...'9':
-		if (k->state == KEY_RELEASE)
+		/* BlackStar-EoP */
+		if (k->sym >= '1' && k->sym <= '9')
+		{
+			if (k->state == KEY_RELEASE)
+				return 1;
+
+			n = k->sym - '1';
+			if (k->mod & KMOD_SHIFT)
+				n += 10;
+			palette_load_preset(n);
+			palette_apply();
+			status.flags |= NEED_UPDATE;
 			return 1;
-		n = k->sym - '1';
-		if (k->mod & KMOD_SHIFT)
-			n += 10;
-		palette_load_preset(n);
-		palette_apply();
-		status.flags |= NEED_UPDATE;
-		return 1;
+		}
 	case SDLK_F2:
 		if (k->state == KEY_RELEASE)
 			return 1;
@@ -1083,8 +1089,9 @@ static int fontedit_key_hack(struct key_event *k)
 	case SDLK_c: case SDLK_p: case SDLK_m:
 	case SDLK_z: case SDLK_v: case SDLK_h:
 	case SDLK_i: case SDLK_q: case SDLK_w:
-	case SDLK_F1...SDLK_F12:
-		return fontedit_handle_key(k);
+		/* BlackStar-EoP */
+		if (k->sym >= SDLK_F1 && k->sym <= SDLK_F12)
+			return fontedit_handle_key(k);
 	case SDLK_RETURN:
 		if (status.dialog_type & (DIALOG_MENU|DIALOG_BOX)) return 0;
 		if (selected_item == FONTLIST) {

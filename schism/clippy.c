@@ -69,6 +69,7 @@ static void _clippy_copy_to_sys(int do_sel)
 	freeme = NULL;
 	if (!_current_selection) {
 		dst = NULL;
+		tmp = NULL;
 		j = 0;
 	} else
 #if defined(WIN32)
@@ -184,7 +185,7 @@ static void _clippy_copy_to_sys(int do_sel)
 /* TODO: is the first parameter ever going to be used, or can we kill it? */
 static void _string_paste(UNUSED int cb, const char *cbptr)
 {
-	SDL_Event event = {};
+	SDL_Event event = { 0u };
 
 	event.user.type = SCHISM_EVENT_PASTE;
 	event.user.data1 = str_dup(cbptr); /* current_clipboard... is it safe? */
@@ -288,7 +289,7 @@ static int handle_xlib_err(Display *d, XErrorEvent *e)
 
 void clippy_init(void)
 {
-	SDL_SysWMinfo info = {};
+	SDL_SysWMinfo info = { 0u };
 
 	has_sys_clip = 0;
 	SDL_VERSION(&info.version);
@@ -330,7 +331,7 @@ static char *_internal_clippy_paste(int cb)
 	int getme;
 #elif defined(WIN32)
 	char *src;
-	int clen;
+	size_t clen;
 #elif defined(__QNXNTO__)
 	void *clhandle;
 	PhClipHeader *clheader;

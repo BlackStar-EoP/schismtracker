@@ -64,7 +64,6 @@ static int display_native_y = -1;
 
 #include "sdlmain.h"
 
-#include <unistd.h>
 #include <fcntl.h>
 
 #include "video.h"
@@ -145,15 +144,15 @@ static const unsigned int _mouse_pointer[] = {
 0,0
 };
 
-
-#ifdef WIN32
-#include <windows.h>
-#include "wine-ddraw.h"
-struct private_hwdata {
-	LPDIRECTDRAWSURFACE3 dd_surface;
-	LPDIRECTDRAWSURFACE3 dd_writebuf;
-};
-#endif
+/* BlackStar-EoP don't think we need this */
+//#ifdef WIN32
+//#include <windows.h>
+//#include "wine-ddraw.h"
+//struct private_hwdata {
+//	LPDIRECTDRAWSURFACE3 dd_surface;
+//	LPDIRECTDRAWSURFACE3 dd_writebuf;
+//};
+//#endif
 
 struct video_cf {
 	struct {
@@ -190,13 +189,14 @@ struct video_cf {
 		int pixel_data_range;
 #endif
 	} gl;
-#if defined(WIN32)
-	struct {
-		SDL_Surface * surface;
-		RECT rect;
-		DDBLTFX fx;
-	} ddblit;
-#endif
+/* BlackStar-EoP or this */
+//#if defined(WIN32)
+//	struct {
+//		SDL_Surface * surface;
+//		RECT rect;
+//		DDBLTFX fx;
+//	} ddblit;
+//#endif
 	unsigned int yuvlayout;
 	SDL_Rect clip;
 	SDL_Surface * surface;
@@ -494,12 +494,12 @@ void video_setup(const char *driver)
 	}
 
 	if (!strcasecmp(driver, "windib")) {
-		putenv("SDL_VIDEODRIVER=windib");
+		_putenv("SDL_VIDEODRIVER=windib");
 	} else if (!strcasecmp(driver, "ddraw") || !strcasecmp(driver,"directdraw")) {
-		putenv("SDL_VIDEODRIVER=directx");
+		_putenv("SDL_VIDEODRIVER=directx");
 		video.desktop.want_type = VIDEO_DDRAW;
 	} else if (!strcasecmp(driver, "sdlddraw")) {
-		putenv("SDL_VIDEODRIVER=directx");
+		_putenv("SDL_VIDEODRIVER=directx");
 	}
 #elif defined(GEKKO)
 	if (!driver) {
@@ -528,9 +528,9 @@ void video_setup(const char *driver)
 	&& video.yuvlayout != VIDEO_YUV_NONE && 0) /* don't do this until we figure out how to make it better */
 			 && !strcasecmp(driver, "x11")) {
 		video.desktop.want_type = VIDEO_YUV;
-		putenv((char *) "SDL_VIDEO_YUV_DIRECT=1");
-		putenv((char *) "SDL_VIDEO_YUV_HWACCEL=1");
-		putenv((char *) "SDL_VIDEODRIVER=x11");
+		_putenv((char *) "SDL_VIDEO_YUV_DIRECT=1");
+		_putenv((char *) "SDL_VIDEO_YUV_HWACCEL=1");
+		_putenv((char *) "SDL_VIDEODRIVER=x11");
 #ifdef USE_X11
 	} else if (!strcasecmp(driver, "dga")) {
 		putenv((char *) "SDL_VIDEODRIVER=dga");
@@ -559,21 +559,21 @@ void video_setup(const char *driver)
 	|| !strcasecmp(driver, "aa")) {
 		/* SDL needs to have been built this way... */
 		unset_env_var("DISPLAY");
-		putenv((char *) "SDL_VIDEODRIVER=aalib");
+		_putenv((char *) "SDL_VIDEODRIVER=aalib");
 		video.desktop.want_type = VIDEO_SURFACE;
 		video.desktop.fb_hacks = 1;
 
 	} else if (video.yuvlayout != VIDEO_YUV_NONE && !strcasecmp(driver, "yuv")) {
 		video.desktop.want_type = VIDEO_YUV;
-		putenv((char *) "SDL_VIDEO_YUV_DIRECT=1");
-		putenv((char *) "SDL_VIDEO_YUV_HWACCEL=1");
+		_putenv((char *) "SDL_VIDEO_YUV_DIRECT=1");
+		_putenv((char *) "SDL_VIDEO_YUV_HWACCEL=1");
 		/* leave everything else alone... */
 	} else if (!strcasecmp(driver, "dummy")
 	|| !strcasecmp(driver, "null")
 	|| !strcasecmp(driver, "none")) {
 
 		unset_env_var("DISPLAY");
-		putenv((char *) "SDL_VIDEODRIVER=dummy");
+		_putenv((char *) "SDL_VIDEODRIVER=dummy");
 		video.desktop.want_type = VIDEO_SURFACE;
 		video.desktop.fb_hacks = 1;
 #if HAVE_SIGNAL_H
@@ -976,30 +976,31 @@ void video_resize(unsigned int width, unsigned int height)
 
 	switch (video.desktop.want_type) {
 	case VIDEO_DDRAW:
+/* BlackStar-EoP I'm expecting zero video now tbh */
 #ifdef WIN32
-		if (video.ddblit.surface) {
-			SDL_FreeSurface(video.ddblit.surface);
-			video.ddblit.surface = 0;
-		}
-		memset(&video.ddblit.fx, 0, sizeof(DDBLTFX));
-		video.ddblit.fx.dwSize = sizeof(DDBLTFX);
-		_setup_surface(width, height, SDL_DOUBLEBUF);
-		video.ddblit.rect.top = video.clip.y;
-		video.ddblit.rect.left = video.clip.x;
-		video.ddblit.rect.right = video.clip.x + video.clip.w;
-		video.ddblit.rect.bottom = video.clip.y + video.clip.h;
-		video.ddblit.surface = SDL_CreateRGBSurface(SDL_HWSURFACE,
-				NATIVE_SCREEN_WIDTH, NATIVE_SCREEN_HEIGHT,
-				video.surface->format->BitsPerPixel,
-				video.surface->format->Rmask,
-				video.surface->format->Gmask,
-				video.surface->format->Bmask,0);
-		if (video.ddblit.surface
-		&& ((video.ddblit.surface->flags & SDL_HWSURFACE) == SDL_HWSURFACE)) {
-			video.desktop.type = VIDEO_DDRAW;
-			break;
-		}
-		/* fall through */
+		//if (video.ddblit.surface) {
+		//	SDL_FreeSurface(video.ddblit.surface);
+		//	video.ddblit.surface = 0;
+		//}
+		//memset(&video.ddblit.fx, 0, sizeof(DDBLTFX));
+		//video.ddblit.fx.dwSize = sizeof(DDBLTFX);
+		//_setup_surface(width, height, SDL_DOUBLEBUF);
+		//video.ddblit.rect.top = video.clip.y;
+		//video.ddblit.rect.left = video.clip.x;
+		//video.ddblit.rect.right = video.clip.x + video.clip.w;
+		//video.ddblit.rect.bottom = video.clip.y + video.clip.h;
+		//video.ddblit.surface = SDL_CreateRGBSurface(SDL_HWSURFACE,
+		//		NATIVE_SCREEN_WIDTH, NATIVE_SCREEN_HEIGHT,
+		//		video.surface->format->BitsPerPixel,
+		//		video.surface->format->Rmask,
+		//		video.surface->format->Gmask,
+		//		video.surface->format->Bmask,0);
+		//if (video.ddblit.surface
+		//&& ((video.ddblit.surface->flags & SDL_HWSURFACE) == SDL_HWSURFACE)) {
+		//	video.desktop.type = VIDEO_DDRAW;
+		//	break;
+		//}
+		///* fall through */
 #endif
 	case VIDEO_SURFACE:
 RETRYSURF:      /* use SDL surfaces */
@@ -1732,15 +1733,17 @@ void video_blit(void)
 		bpp = 4;
 		break;
 	case VIDEO_DDRAW:
+
+/* BlackStar TODO FIXME later on when the whole thing builds */
 #ifdef WIN32
-		if (SDL_MUSTLOCK(video.ddblit.surface)) {
-			while (SDL_LockSurface(video.ddblit.surface) == -1) {
-				SDL_Delay(10);
-			}
-		}
-		pixels = (unsigned char *)video.ddblit.surface->pixels;
-		pitch = video.ddblit.surface->pitch;
-		bpp = video.surface->format->BytesPerPixel;
+		//if (SDL_MUSTLOCK(video.ddblit.surface)) {
+		//	while (SDL_LockSurface(video.ddblit.surface) == -1) {
+		//		SDL_Delay(10);
+		//	}
+		//}
+		//pixels = (unsigned char *)video.ddblit.surface->pixels;
+		//pitch = video.ddblit.surface->pitch;
+		//bpp = video.surface->format->BytesPerPixel;
 		break;
 #else
 		return; /* eh? */
@@ -1764,27 +1767,28 @@ void video_blit(void)
 		}
 		SDL_Flip(video.surface);
 		break;
+/* BlackStar-EoP TODO FIXME */
 #ifdef WIN32
-	case VIDEO_DDRAW:
-		if (SDL_MUSTLOCK(video.ddblit.surface)) {
-			SDL_UnlockSurface(video.ddblit.surface);
-		}
-		switch (IDirectDrawSurface3_Blt(
-				video.surface->hwdata->dd_writebuf,
-				&video.ddblit.rect,
-				video.ddblit.surface->hwdata->dd_surface,0,
-				DDBLT_WAIT, NULL)) {
-		case DD_OK:
-			break;
-		case DDERR_SURFACELOST:
-			IDirectDrawSurface3_Restore(video.ddblit.surface->hwdata->dd_surface);
-			IDirectDrawSurface3_Restore(video.surface->hwdata->dd_surface);
-			break;
-		default:
-			break;
-		};
-		SDL_Flip(video.surface);
-		break;
+	//case VIDEO_DDRAW:
+	//	if (SDL_MUSTLOCK(video.ddblit.surface)) {
+	//		SDL_UnlockSurface(video.ddblit.surface);
+	//	}
+	//	switch (IDirectDrawSurface3_Blt(
+	//			video.surface->hwdata->dd_writebuf,
+	//			&video.ddblit.rect,
+	//			video.ddblit.surface->hwdata->dd_surface,0,
+	//			DDBLT_WAIT, NULL)) {
+	//	case DD_OK:
+	//		break;
+	//	case DDERR_SURFACELOST:
+	//		IDirectDrawSurface3_Restore(video.ddblit.surface->hwdata->dd_surface);
+	//		IDirectDrawSurface3_Restore(video.surface->hwdata->dd_surface);
+	//		break;
+	//	default:
+	//		break;
+	//	};
+	//	SDL_Flip(video.surface);
+	//	break;
 #endif
 	case VIDEO_YUV:
 		SDL_UnlockYUVOverlay(video.overlay);

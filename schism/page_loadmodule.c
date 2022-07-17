@@ -149,7 +149,7 @@ static char **semicolon_split(const char *i)
 		n++;
 
 	o = p = mem_calloc(n, sizeof(char *));
-	a = strdup(i);
+	a = _strdup(i);
 
 	do {
 		*p++ = a;
@@ -183,7 +183,7 @@ idea for return codes:
 
 static void handle_file_entered_L(const char *ptr)
 {
-	dmoz_filelist_t tmp = {};
+	dmoz_filelist_t tmp = { 0 };
 	struct stat sb;
 
 	/* these shenanigans force the file to take another trip... */
@@ -224,7 +224,7 @@ static void loadsave_song_changed(void)
 static void do_save_song(char *ptr)
 {
 	int ret, export = (status.current_page == PAGE_EXPORT_MODULE);
-	const char *filename = ptr ?: song_get_filename();
+	const char *filename = ptr ? ptr : song_get_filename();
 	const char *seltype = NULL;
 	struct widget *widget;
 
@@ -598,13 +598,13 @@ static void file_list_draw(void)
 
 			draw_text_len(file->base, 18, 3, pos, fg1, bg);
 			draw_char(168, 21, pos, 2, bg);
-			draw_text_len(file->title ?: "", 25, 22, pos, fg2, bg);
+			draw_text_len(file->title ? file->title : "", 25, 22, pos, fg2, bg);
 		}
 
 		/* info for the current file */
 		if (current_file >= 0 && current_file < flist.num_files) {
 			file = flist.files[current_file];
-			draw_text_len(file->description ?: "", 26, 51, 40, 5, 0);
+			draw_text_len(file->description ? file->description : "", 26, 51, 40, 5, 0);
 			sprintf(buf, "%09lu", (unsigned long)file->filesize);
 			draw_text_len(buf, 26, 51, 41, 5, 0);
 			draw_text_len(get_date_string(file->timestamp, buf), 26, 51, 42, 5, 0);
@@ -641,7 +641,7 @@ static void do_delete_file(UNUSED void *data)
 	ptr = flist.files[current_file]->path;
 
 	/* would be neat to send it to the trash can if there is one */
-	unlink(ptr);
+	_unlink(ptr);
 
 	/* remember the list positions */
 	old_top_file = top_file;

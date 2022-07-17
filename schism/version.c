@@ -95,6 +95,10 @@ Information at our disposal:
 static int get_version_tm(struct tm *version)
 {
 	char *ret;
+	/* BlackStar-EoP */
+#ifndef VERSION
+#define VERSION "BlackStar-EoP"
+#endif
 
 	memset(version, 0, sizeof(*version));
 	ret = strptime(VERSION, "%Y %m %d", version);

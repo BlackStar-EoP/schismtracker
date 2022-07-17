@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\schism">
+      <UniqueIdentifier>{e49288ea-d94f-449b-8ef8-09e1be72b1cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include">
+      <UniqueIdentifier>{5c7f04f4-9094-41ea-b7d3-5fab20f4a688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\auto">
+      <UniqueIdentifier>{fd5f7762-f365-4fb4-87a6-27cbd1f4df0a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\schism\page.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_about.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_blank.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_config.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_help.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_info.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_instruments.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_loadinst.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_loadmodule.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_loadsample.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_log.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_message.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_midi.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_midiout.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_orderpan.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_palette.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_patedit.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_preferences.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_samples.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_vars.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\page_waterfall.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\palettes.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\pattern-view.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\sample-edit.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\sample-view.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\slurp.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\status.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\tree.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\util.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\version.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\video.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\volume-core.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\widget.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\widget-keyhandler.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\xpmdata.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\audio_loadsave.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\audio_playback.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\charset.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\clippy.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\config.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\config-parser.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\dialog.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\disko.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\dmoz.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\draw-char.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\draw-misc.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\fakemem.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\isysev.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\itf.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\keyboard.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\main.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\menu.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\midi-core.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\midi-ip.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\schism\mplink.c">
+      <Filter>Source Files\schism</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\video.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\charset.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\clippy.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\cmixer.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\config-parser.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\disko.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\dmoz.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\draw-char.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\event.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\fmopl2.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\fmopl3.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\fmt.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\fmt-types.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\headers.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\it.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\it_defs.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\log.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\midi.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\osdefs.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\page.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\pattern-view.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\precomp_lut.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sample-edit.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sdlmain.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\slurp.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\snd_fm.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\snd_gm.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\sndfile.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\song.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\tables.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\tree.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\util.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\version.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\vgamem-scanner.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\auto\logoschism.h">
+      <Filter>Header Files\include\auto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\auto\schismico.h">
+      <Filter>Header Files\include\auto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\auto\schismico_hires.h">
+      <Filter>Header Files\include\auto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\auto\logoit.h">
+      <Filter>Header Files\include\auto</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

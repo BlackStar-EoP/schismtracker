@@ -205,7 +205,7 @@ long disko_tell(disko_t *ds)
 void disko_seterror(disko_t *ds, int err)
 {
 	// Don't set an error if one already exists, and don't allow clearing an error value
-	ds->error = errno = ds->error ?: err ?: EINVAL;
+	ds->error = errno = ds->error ? ds->error : err ? err : EINVAL;
 }
 
 // ---------------------------------------------------------------------------

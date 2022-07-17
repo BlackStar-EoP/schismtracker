@@ -51,7 +51,7 @@ struct tracker_status status = {
 	// everything else set to 0/NULL/etc.
 };
 
-struct page pages[PAGE_MAX] = {};
+struct page pages[PAGE_MAX] = { 0 };
 
 struct widget *widgets = NULL;
 int *selected_widget = NULL;
@@ -234,7 +234,7 @@ inline int page_is_instrument_list(int page)
 
 /* --------------------------------------------------------------------------------------------------------- */
 
-static struct widget new_song_widgets[10] = {};
+static struct widget new_song_widgets[10] = { 0 };
 static const int new_song_groups[4][3] = { {0, 1, -1}, {2, 3, -1}, {4, 5, -1}, {6, 7, -1} };
 
 static void new_song_ok(UNUSED void *data)
@@ -946,7 +946,7 @@ static int _handle_ime(struct key_event *k)
 				digraph_c = c;
 				status_text_flash_bios("Enter digraph: %c", c);
 			} else {
-				struct key_event fake = {};
+				struct key_event fake = { 0 };
 
 				fake.unicode = char_digraph(digraph_c, c);
 				if (fake.unicode) {
@@ -972,7 +972,7 @@ static int _handle_ime(struct key_event *k)
 		/* ctrl+shift -> unicode character */
 		if ((k->sym==SDLK_LCTRL || k->sym==SDLK_RCTRL || k->sym==SDLK_LSHIFT || k->sym==SDLK_RSHIFT)) {
 			if (k->state == KEY_RELEASE && cs_unicode_c > 0) {
-				struct key_event fake = {};
+				struct key_event fake = { 0 };
 
 				fake.unicode = char_unicode_to_cp437(cs_unicode);
 				if (fake.unicode) {
@@ -1017,7 +1017,7 @@ static int _handle_ime(struct key_event *k)
 		if (k->sym == SDLK_LALT || k->sym == SDLK_RALT
 		    || k->sym == SDLK_LMETA || k->sym == SDLK_RMETA) {
 			if (k->state == KEY_RELEASE && alt_numpad_c > 0 && (alt_numpad & 255) > 0) {
-				struct key_event fake = {};
+				struct key_event fake = { 0 };
 
 				fake.unicode = alt_numpad & 255;
 				if (!(status.flags & CLASSIC_MODE))

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\schism\audio_loadsave.c" />
+    <ClCompile Include="..\..\..\schism\audio_playback.c" />
+    <ClCompile Include="..\..\..\schism\charset.c" />
+    <ClCompile Include="..\..\..\schism\clippy.c" />
+    <ClCompile Include="..\..\..\schism\config-parser.c" />
+    <ClCompile Include="..\..\..\schism\config.c" />
+    <ClCompile Include="..\..\..\schism\dialog.c" />
+    <ClCompile Include="..\..\..\schism\disko.c" />
+    <ClCompile Include="..\..\..\schism\dmoz.c" />
+    <ClCompile Include="..\..\..\schism\draw-char.c" />
+    <ClCompile Include="..\..\..\schism\draw-misc.c" />
+    <ClCompile Include="..\..\..\schism\fakemem.c" />
+    <ClCompile Include="..\..\..\schism\isysev.c" />
+    <ClCompile Include="..\..\..\schism\itf.c" />
+    <ClCompile Include="..\..\..\schism\keyboard.c" />
+    <ClCompile Include="..\..\..\schism\main.c" />
+    <ClCompile Include="..\..\..\schism\menu.c" />
+    <ClCompile Include="..\..\..\schism\midi-core.c" />
+    <ClCompile Include="..\..\..\schism\midi-ip.c" />
+    <ClCompile Include="..\..\..\schism\mplink.c" />
+    <ClCompile Include="..\..\..\schism\page.c" />
+    <ClCompile Include="..\..\..\schism\page_about.c" />
+    <ClCompile Include="..\..\..\schism\page_blank.c" />
+    <ClCompile Include="..\..\..\schism\page_config.c" />
+    <ClCompile Include="..\..\..\schism\page_help.c" />
+    <ClCompile Include="..\..\..\schism\page_info.c" />
+    <ClCompile Include="..\..\..\schism\page_instruments.c" />
+    <ClCompile Include="..\..\..\schism\page_loadinst.c" />
+    <ClCompile Include="..\..\..\schism\page_loadmodule.c" />
+    <ClCompile Include="..\..\..\schism\page_loadsample.c" />
+    <ClCompile Include="..\..\..\schism\page_log.c" />
+    <ClCompile Include="..\..\..\schism\page_message.c" />
+    <ClCompile Include="..\..\..\schism\page_midi.c" />
+    <ClCompile Include="..\..\..\schism\page_midiout.c" />
+    <ClCompile Include="..\..\..\schism\page_orderpan.c" />
+    <ClCompile Include="..\..\..\schism\page_palette.c" />
+    <ClCompile Include="..\..\..\schism\page_patedit.c" />
+    <ClCompile Include="..\..\..\schism\page_preferences.c" />
+    <ClCompile Include="..\..\..\schism\page_samples.c" />
+    <ClCompile Include="..\..\..\schism\page_vars.c" />
+    <ClCompile Include="..\..\..\schism\page_waterfall.c" />
+    <ClCompile Include="..\..\..\schism\palettes.c" />
+    <ClCompile Include="..\..\..\schism\pattern-view.c" />
+    <ClCompile Include="..\..\..\schism\sample-edit.c" />
+    <ClCompile Include="..\..\..\schism\sample-view.c" />
+    <ClCompile Include="..\..\..\schism\slurp.c" />
+    <ClCompile Include="..\..\..\schism\status.c" />
+    <ClCompile Include="..\..\..\schism\tree.c" />
+    <ClCompile Include="..\..\..\schism\util.c" />
+    <ClCompile Include="..\..\..\schism\version.c" />
+    <ClCompile Include="..\..\..\schism\video.c" />
+    <ClCompile Include="..\..\..\schism\volume-core.c" />
+    <ClCompile Include="..\..\..\schism\widget-keyhandler.c" />
+    <ClCompile Include="..\..\..\schism\widget.c" />
+    <ClCompile Include="..\..\..\schism\xpmdata.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\auto\logoit.h" />
+    <ClInclude Include="..\..\..\include\auto\logoschism.h" />
+    <ClInclude Include="..\..\..\include\auto\schismico.h" />
+    <ClInclude Include="..\..\..\include\auto\schismico_hires.h" />
+    <ClInclude Include="..\..\..\include\charset.h" />
+    <ClInclude Include="..\..\..\include\clippy.h" />
+    <ClInclude Include="..\..\..\include\cmixer.h" />
+    <ClInclude Include="..\..\..\include\config-parser.h" />
+    <ClInclude Include="..\..\..\include\disko.h" />
+    <ClInclude Include="..\..\..\include\dmoz.h" />
+    <ClInclude Include="..\..\..\include\draw-char.h" />
+    <ClInclude Include="..\..\..\include\event.h" />
+    <ClInclude Include="..\..\..\include\fmopl2.h" />
+    <ClInclude Include="..\..\..\include\fmopl3.h" />
+    <ClInclude Include="..\..\..\include\fmt-types.h" />
+    <ClInclude Include="..\..\..\include\fmt.h" />
+    <ClInclude Include="..\..\..\include\headers.h" />
+    <ClInclude Include="..\..\..\include\it.h" />
+    <ClInclude Include="..\..\..\include\it_defs.h" />
+    <ClInclude Include="..\..\..\include\log.h" />
+    <ClInclude Include="..\..\..\include\midi.h" />
+    <ClInclude Include="..\..\..\include\osdefs.h" />
+    <ClInclude Include="..\..\..\include\page.h" />
+    <ClInclude Include="..\..\..\include\pattern-view.h" />
+    <ClInclude Include="..\..\..\include\precomp_lut.h" />
+    <ClInclude Include="..\..\..\include\sample-edit.h" />
+    <ClInclude Include="..\..\..\include\sdlmain.h" />
+    <ClInclude Include="..\..\..\include\slurp.h" />
+    <ClInclude Include="..\..\..\include\sndfile.h" />
+    <ClInclude Include="..\..\..\include\snd_fm.h" />
+    <ClInclude Include="..\..\..\include\snd_gm.h" />
+    <ClInclude Include="..\..\..\include\song.h" />
+    <ClInclude Include="..\..\..\include\tables.h" />
+    <ClInclude Include="..\..\..\include\tree.h" />
+    <ClInclude Include="..\..\..\include\util.h" />
+    <ClInclude Include="..\..\..\include\version.h" />
+    <ClInclude Include="..\..\..\include\vgamem-scanner.h" />
+    <ClInclude Include="..\..\..\include\video.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{1c621cfc-5854-44a7-b33b-26d99fc04005}</ProjectGuid>
+    <RootNamespace>SchismTracker</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <PublicIncludeDirectories>
+    </PublicIncludeDirectories>
+    <IncludePath>C:\Users\BlackStar\Desktop\Edge of Panic\libraries\SDL1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\BlackStar\Desktop\Edge of Panic\schismtracker\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions); _CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

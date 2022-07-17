@@ -577,7 +577,7 @@ static int kmap_cmp(const void *a, const void *b)
 static kmap_t *kmap_alloc(const char *name)
 {
 	kmap_t *m = mem_alloc(sizeof(kmap_t));
-	m->name = strdup(name);
+	m->name = _strdup(name);
 	m->parent = NULL;
 	m->bindings = tree_alloc(kmapnode_cmp);
 	return m;
@@ -737,6 +737,7 @@ static isysev_t event_parse(const char *s)
 	char *e;
 	char tmp[16];
 	isysev_t ev;
+	isysev_t evnull = { 0 };
 
 	ev.ival = 0;
 
@@ -751,7 +752,7 @@ static isysev_t event_parse(const char *s)
 		n = strtol(s, &e, 10);
 		if (s == e) {
 			printf("event_parse: what kind of rubbish is this?\n");
-			return (isysev_t) 0u;
+			return evnull;
 		}
 		ev.bits.dev_type = CLAMP(n, 0, SKDEV_TYPE_SENTINEL - 1);
 	} else {
@@ -790,7 +791,7 @@ static isysev_t event_parse(const char *s)
 		if (!len) {
 			// Argh, this isn't an event descriptor at all, it's just junk. Time to bail.
 			printf("event_parse: unknown event descriptor\n");
-			return (isysev_t) 0u;
+			return evnull;
 		}
 	}
 	s += len;
@@ -802,7 +803,7 @@ static isysev_t event_parse(const char *s)
 		if (s == e) {
 			// Wait, no.
 			printf("event_parse: hexcode is not hex\n");
-			return (isysev_t) 0u;
+			return evnull;
 		}
 		ev.bits.keycode = CLAMP(n, 0, SKCODE_MAX);
 		s = e;
@@ -860,14 +861,14 @@ static isysev_t event_parse(const char *s)
 		} else {
 			// Argh! All this work and it's not a valid key.
 			printf("event_parse: unknown key \"%s\"\n", tmp);
-			return (isysev_t) 0u;
+			return evnull;
 		}
 
 		s += strlen(tmp);
 	} else {
 		// Give up!
 		printf("event_parse: invalid event descriptor for device\n");
-		return (isysev_t) 0u;
+		return evnull;
 	}
 
 	len = strspn(s, " \t");

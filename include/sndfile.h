@@ -18,7 +18,6 @@
 
 #include "tables.h"
 
-
 #define MOD_AMIGAC2             0x1AB
 #define MAX_SAMPLE_LENGTH       16000000
 #define MAX_SAMPLE_RATE         192000
@@ -591,7 +590,9 @@ typedef struct song {
 	// Current session data is added at save time, and is NOT a part of histdata.
 	int histlen; // How many session history data entries exist (each entry is eight bytes)
 	uint8_t *histdata; // Preserved entries from prior sessions, might be NULL if histlen = 0
-	struct timeval editstart; // When the song was loaded
+	
+	/* BlackStar-EoP unsupported on Win32 */
+	uint32_t editstart; // When the song was loaded
 
 	// mixer stuff
 	uint32_t mix_flags; // SNDMIX_*

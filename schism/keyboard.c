@@ -445,7 +445,7 @@ inline int kbd_char_to_99(struct key_event *k)
 	int c;
 	if (!NO_CAM_MODS(k->mod)) return -1;
 
-	c = tolower(k->unicode ?: k->sym);
+	c = tolower(k->unicode ? k->unicode : k->sym);
 	if (c >= 'h' && c <= 'z')
 		return 10 + c - 'h';
 
@@ -589,9 +589,9 @@ int kbd_get_alnum(struct key_event *k)
 		return 0;
 	if (k->mod & KMOD_SHIFT) {
 		const char shifted_digits[] = ")!@#$%^&*("; // comical profanity
+		if (k->sym >= 'a' && k->sym <= 'z') return toupper(k->sym);
+		else if (k->sym >= '0' && k->sym <= '9') shifted_digits[k->sym - '0'];
 		switch (k->sym) {
-			case 'a'...'z': return toupper(k->sym);
-			case '0'...'9': return shifted_digits[k->sym - '0'];
 			case '[': return '{';
 			case ']': return '}';
 			case ';': return ':';

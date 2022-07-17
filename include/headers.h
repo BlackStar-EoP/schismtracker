@@ -42,12 +42,14 @@ will do for now. */
 
 
 #include <stdio.h>
-
+#define HAVE_STDLIB_H /* BlackStar-EoP */
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
 
 #include <stdarg.h>
+
+#include <winsock.h> /* BlackStar-EoP needed for TIMEVAL */
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -57,7 +59,7 @@ will do for now. */
 
 
 /* Portability is a pain. */
-#if STDC_HEADERS
+#ifdef STDC_HEADERS
 # include <string.h>
 #else
 # ifndef HAVE_STRCHR
@@ -65,10 +67,6 @@ will do for now. */
 #  define strrchr rindex
 # endif
 char *strchr(), *strrchr();
-# ifndef HAVE_MEMMOVE
-#  define memcpy(d, s, n) bcopy ((s), (d), (n))
-#  define memmove(d, s, n) bcopy ((s), (d), (n))
-# endif
 #endif
 
 #if !defined(HAVE_STRCASECMP) && defined(HAVE_STRICMP)
@@ -119,6 +117,7 @@ char *strchr(), *strrchr();
 # undef PATH_MAX
 #endif
 
+#define HAVE_LIMITS_H /* BlackStar-EoP */
 #ifdef HAVE_LIMITS_H
 #include <limits.h>
 #endif

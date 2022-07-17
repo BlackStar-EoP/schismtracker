@@ -352,7 +352,7 @@ static void do_delete_file(UNUSED void *data)
 	ptr = flist.files[current_file]->path;
 
 	/* would be neat to send it to the trash can if there is one */
-	unlink(ptr);
+	_unlink(ptr);
 
 	/* remember the list positions */
 	old_top_file = top_file;

@@ -35,7 +35,7 @@
 
 /* --------------------------------------------------------------------- */
 /* config settings */
-
+#define PATH_MAX 256u /* BlackStar-EoP */
 char cfg_dir_modules[PATH_MAX + 1], cfg_dir_samples[PATH_MAX + 1], cfg_dir_instruments[PATH_MAX + 1],
 	cfg_dir_dotschism[PATH_MAX + 1], cfg_font[NAME_MAX + 1];
 char cfg_video_driver[65];

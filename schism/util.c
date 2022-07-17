@@ -72,7 +72,7 @@ void ms_sleep(unsigned int ms)
 char *str_dup(const char *s)
 {
 	char *q;
-	q = strdup(s);
+	q = _strdup(s);
 	if (!q) {
 		/* throw out of memory exception */
 		perror("strdup");
@@ -234,7 +234,7 @@ char *get_time_string(time_t when, char *buf)
 	struct tm tmr;
 
 	localtime_r(&when, &tmr);
-	snprintf(buf, 27, "%d:%02d%s", tmr.tm_hour % 12 ? : 12, tmr.tm_min, tmr.tm_hour < 12 ? "am" : "pm");
+	snprintf(buf, 27, "%d:%02d%s", tmr.tm_hour % 12 ? tmr.tm_hour % 12 : 12, tmr.tm_min, tmr.tm_hour < 12 ? "am" : "pm");
 	return buf;
 }
 
@@ -459,12 +459,19 @@ static inline int readhex(const char *s, int w)
 
 	while (w--) {
 		o <<= 4;
-		switch (*s) {
-			case '0'...'9': o |= *s - '0';      break;
-			case 'a'...'f': o |= *s - 'a' + 10; break;
-			case 'A'...'F': o |= *s - 'A' + 10; break;
-			default: return -1;
-		}
+		/* BlackStar-EoP */
+		if (*s >= '0' && *s <= '9') o |= *s - '0';
+		else if (*s >= 'a' && *s <= 'f') o |= *s - 'a' + 10;
+		else if (*s >= 'A' && *s <= 'F') o |= *s - 'A' + 10;
+		else
+			return -1;
+
+		//switch (*s) {
+		//	case '0'...'9': o |= *s - '0';      break;
+		//	case 'a'...'f': o |= *s - 'a' + 10; break;
+		//	case 'A'...'F': o |= *s - 'A' + 10; break;
+		//	default: return -1;
+		//}
 		s++;
 	}
 	return o;
@@ -481,8 +488,9 @@ char *str_unescape(const char *s)
 	while (*s) {
 		if (*s == '\\') {
 			s++;
-			switch (*s) {
-			case '0'...'7':
+			/* BlackStar-EoP */
+			if (*s >= '0' && *s <= '7')
+			{
 				*d = 0;
 				end = s + 3;
 				while (s < end && *s >= '0' && *s <= '7') {
@@ -491,43 +499,46 @@ char *str_unescape(const char *s)
 				}
 				d++;
 				s--;
-				break;
-			case 'a':
-				*d++ = '\a';
-				break;
-			case 'b':
-				*d++ = '\b';
-				break;
-			case 'f':
-				*d++ = '\f';
-				break;
-			case 'n':
-				*d++ = '\n';
-				break;
-			case 'r':
-				*d++ = '\r';
-				break;
-			case 't':
-				*d++ = '\t';
-				break;
-			case 'v':
-				*d++ = '\v';
-				break;
-			case '\0': // trailing backslash?
-				*d++ = '\\';
-				s--;
-				break;
-			case 'x':
-				hex = readhex(s + 1, 2);
-				if (hex >= 0) {
-					*d++ = hex;
-					s += 2;
+			}
+			else {
+				switch (*s) {
+				case 'a':
+					*d++ = '\a';
+					break;
+				case 'b':
+					*d++ = '\b';
+					break;
+				case 'f':
+					*d++ = '\f';
+					break;
+				case 'n':
+					*d++ = '\n';
+					break;
+				case 'r':
+					*d++ = '\r';
+					break;
+				case 't':
+					*d++ = '\t';
+					break;
+				case 'v':
+					*d++ = '\v';
+					break;
+				case '\0': // trailing backslash?
+					*d++ = '\\';
+					s--;
+					break;
+				case 'x':
+					hex = readhex(s + 1, 2);
+					if (hex >= 0) {
+						*d++ = hex;
+						s += 2;
+						break;
+					}
+					/* fall through */
+				default: /* Also handles any other char, like \" \\ \; etc. */
+					*d++ = *s;
 					break;
 				}
-				/* fall through */
-			default: /* Also handles any other char, like \" \\ \; etc. */
-				*d++ = *s;
-				break;
 			}
 		} else {
 			*d++ = *s;
@@ -595,6 +606,10 @@ int get_num_lines(const char *text)
 /* 0 = success, !0 = failed (check errno) */
 int make_backup_file(const char *filename, int numbered)
 {
+	/* BlackStar-EoP */
+#ifndef PATH_MAX
+#define PATH_MAX 256u
+#endif
 	char buf[PATH_MAX];
 
 	/* ensure plenty of room to breathe */
@@ -667,7 +682,7 @@ char *get_home_directory(void)
 	return str_dup("PROGDIR:");
 #elif defined(WIN32)
 	if (SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, buf) == ERROR_SUCCESS)
-		return strdup(buf);
+		return _strdup(buf);
 #else
 	char *ptr = getenv("HOME");
 	if (ptr)
@@ -687,7 +702,7 @@ char *get_dot_directory(void)
 #ifdef WIN32
 	char buf[PATH_MAX + 1];
 	if (SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, buf) == ERROR_SUCCESS)
-		return strdup(buf);
+		return _strdup(buf);
 	// else fall back to home (but if this ever happens, things are really screwed...)
 #endif
 	return get_home_directory();
@@ -716,7 +731,7 @@ void unset_env_var(const char *key)
 	unsetenv(key);
 #else
 	/* assume POSIX-style semantics */
-	putenv(key);
+	_putenv(key);
 #endif
 }
 
@@ -725,7 +740,7 @@ void put_env_var(const char *key, const char *value)
 	char *x;
 	x = mem_alloc(strlen(key) + strlen(value)+2);
 	sprintf(x, "%s=%s", key,value);
-	if (putenv(x) == -1) {
+	if (_putenv(x) == -1) {
 		perror("putenv");
 		exit(255); /* memory exception */
 	}
@@ -761,7 +776,7 @@ int run_hook(const char *dir, const char *name, const char *maybe_arg)
 	if (stat(buf2, &sb) == -1) {
 		r = 0;
 	} else {
-		ptr = getenv("COMSPEC") ?: "command.com";
+		ptr = getenv("COMSPEC") ? getenv("COMSPEC") : "command.com";
 		r = _spawnlp(_P_WAIT, ptr, ptr, "/c", buf2, maybe_arg, 0);
 	}
 	SetCurrentDirectory(buf);

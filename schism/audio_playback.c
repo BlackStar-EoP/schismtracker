@@ -40,6 +40,7 @@
 #include <string.h>
 #include <errno.h>
 #include <math.h>
+#include <limits.h>  /* BlackStar-EoP */
 
 #include "sdlmain.h"
 

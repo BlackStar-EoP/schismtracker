@@ -600,7 +600,7 @@ static int pattern_selection_system_paste(UNUSED int cb, const void *data)
 	copyin_x = copyin_y = 0;
 	/* okay, let's start parsing */
 	while (*str) {
-		song_note_t n = {};
+		song_note_t n = {  0 };
 
 		if (!str[0] || !str[1] || !str[2]) break;
 		switch (*str) {
@@ -1828,7 +1828,7 @@ static void selection_roll(enum roll_dir direction)
 	if (sel_rows < 2) { return; }
 	seldata = pattern + 64 * selection.first_row + selection.first_channel - 1;
 
-	song_note_t temp[sel_chans];
+	song_note_t temp[64]; /* BlackStar-EoP Assume worst case scenario*/
 	copy_bytes = sizeof(temp);
 	row = (direction == ROLL_DOWN ? sel_rows - 1 : 0);
 	memcpy(temp, seldata + 64 * row, copy_bytes);
@@ -3486,7 +3486,7 @@ static int pattern_editor_handle_alt_key(struct key_event * k)
 			// emulate some weird impulse tracker behavior here:
 			// with row highlight set to zero, alt-d selects the whole channel
 			// if the cursor is at the top, and clears the selection otherwise
-			block_double_size = current_song->row_highlight_major ?: (current_row ? 0 : 65536);
+			block_double_size = current_song->row_highlight_major ? current_song->row_highlight_major : (current_row ? 0 : 65536);
 			selection.first_channel = selection.last_channel = current_channel;
 			selection.first_row = current_row;
 		}
@@ -4208,9 +4208,9 @@ static int pattern_editor_handle_key(struct key_event * k)
 		if (k->state == KEY_RELEASE)
 			return 0;
 		{
-			int rh = current_song->row_highlight_major ?: 16;
+			int rh = current_song->row_highlight_major ? current_song->row_highlight_major : 16;
 			if (current_row == total_rows)
-				current_row -= (current_row % rh) ?: rh;
+				current_row -= (current_row % rh) ? (current_row % rh) : rh;
 			else
 				current_row -= rh;
 		}
@@ -4218,7 +4218,7 @@ static int pattern_editor_handle_key(struct key_event * k)
 	case SDLK_PAGEDOWN:
 		if (k->state == KEY_RELEASE)
 			return 0;
-		current_row += current_song->row_highlight_major ?: 16;
+		current_row += current_song->row_highlight_major ? current_song->row_highlight_major : 16;
 		return -1;
 	case SDLK_HOME:
 		if (k->state == KEY_RELEASE)
