@@ -22,6 +22,12 @@
     <Filter Include="Header Files\include\auto">
       <UniqueIdentifier>{fd5f7762-f365-4fb4-87a6-27cbd1f4df0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\player">
+      <UniqueIdentifier>{5d4d4f36-3dd8-4727-97d8-dc108e076d97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fmt">
+      <UniqueIdentifier>{43a43e49-1917-401f-bef8-dfa6fdf8d800}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\schism\page.c">
@@ -188,6 +194,156 @@
     </ClCompile>
     <ClCompile Include="..\..\..\schism\mplink.c">
       <Filter>Source Files\schism</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\equalizer.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\filters.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\fmopl2.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\fmopl3.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\fmpatches.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\mixer.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\mixutil.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\opl-util.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\snd_fm.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\snd_gm.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\sndmix.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\tables.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\csndfile.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\player\effects.c">
+      <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\669.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\aiff.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\ams.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\au.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\compression.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\f2r.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\far.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\generic.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\imf.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\it.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\iti.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\its.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\liq.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\mdl.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\med.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\mf.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\mid.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\mmcmp.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\mod.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\mp3.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\mt2.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\mtm.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\mus.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\ntk.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\ogg.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\okt.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\pat.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\raw.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\s3i.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\s3m.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\sfx.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\stm.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\ult.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\wav.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\xi.c">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\fmt\xm.c">
+      <Filter>Source Files\fmt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

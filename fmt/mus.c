@@ -54,7 +54,7 @@ int fmt_mus_read_info(dmoz_file_t *file, const uint8_t *data, size_t length)
 		return 0;
 
 	file->description = "Doom Music File";
-	file->title = strdup("");
+	file->title = _strdup("");
 	file->type = TYPE_MODULE_MOD;
 	return 1;
 }
@@ -97,7 +97,7 @@ int fmt_mus_load_song(song_t *song, slurp_t *fp, UNUSED unsigned int lflags)
 		uint8_t note; // the last note played in this channel
 		uint8_t instrument; // 1 -> 128
 		uint8_t volume; // 0 -> 64
-	} chanstate[16] = {};
+	} chanstate[16] = { 0 };
 	uint8_t prevspeed = 1;
 	uint8_t patch_samples[128] = {0};
 	uint8_t patch_percussion[128] = {0};

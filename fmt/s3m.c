@@ -86,6 +86,7 @@ int fmt_s3m_load_song(song_t *song, slurp_t *fp, unsigned int lflags)
 	char any_samples = 0;
 	int uc;
 	const char *tid = NULL;
+	int initial_speed = 0;
 
 	/* check the tag */
 	slurp_seek(fp, 44, SEEK_SET);
@@ -126,7 +127,8 @@ int fmt_s3m_load_song(song_t *song, slurp_t *fp, unsigned int lflags)
 	song->initial_global_volume = slurp_getc(fp) << 1;
 	// In the case of invalid data, ST3 uses the speed/tempo value that's set in the player prior to
 	// loading the song, but that's just crazy.
-	song->initial_speed = slurp_getc(fp) ?: 6;
+	initial_speed = slurp_getc(fp);
+	song->initial_speed = initial_speed ? initial_speed : 6;
 	song->initial_tempo = slurp_getc(fp);
 	if (song->initial_tempo <= 32) {
 		// (Yes, 32 is ignored by Scream Tracker.)
@@ -554,7 +556,7 @@ struct s3i_header {
 
 static void write_s3i_header(disko_t *fp, song_sample_t *smp, uint32_t sdata)
 {
-	struct s3i_header hdr = {};
+	struct s3i_header hdr = { 0 };
 	int n;
 
 	if (smp->flags & CHN_ADLIB) {
@@ -582,10 +584,10 @@ static void write_s3i_header(disko_t *fp, song_sample_t *smp, uint32_t sdata)
 	hdr.c5speed = bswapLE32(smp->c5speed);
 
 	for (n = 25; n >= 0; n--)
-		if ((smp->name[n] ?: 32) != 32)
+		if ((smp->name[n] ? smp->name[n] : 32) != 32)
 			break;
 	for (; n >= 0; n--)
-		hdr.name[n] = smp->name[n] ?: 32;
+		hdr.name[n] = smp->name[n] ? smp->name[n] : 32;
 
 	disko_write(fp, &hdr, sizeof(hdr));
 }
@@ -641,61 +643,78 @@ static int write_s3m_pattern(disko_t *fp, song_t *song, int pat, uint8_t *chanty
 					out.note = ins->note_map[out.note - 1];
 				}
 			}
+			/* BlackStar-EoP */
+			//switch (out.note) {
+			//case 1 ... 12:
+			//case 109 ... 120:
+			//	// Octave 0/9 (or higher?)
+			//	warn |= 1 << WARN_NOTERANGE;
+			//	out.note = 255;
+			//	break;
+			//case 13 ... 108:
+			//	// C-1 through B-8
+			//	out.note -= 13;
+			//	out.note = (out.note % 12) + ((out.note / 12) << 4);
+			//	b |= 32;
+			//	break;
 
-			switch (out.note) {
-			case 1 ... 12:
-			case 109 ... 120:
+			if ((out.note >= 1 && out.note <= 12) ||
+				(out.note >= 109 && out.note <= 120)) {
 				// Octave 0/9 (or higher?)
 				warn |= 1 << WARN_NOTERANGE;
 				out.note = 255;
-				break;
-			case 13 ... 108:
+			}
+			else if ((out.note >= 13 && out.note <= 108)) {
 				// C-1 through B-8
 				out.note -= 13;
 				out.note = (out.note % 12) + ((out.note / 12) << 4);
 				b |= 32;
-				break;
-			case NOTE_CUT:
-			case NOTE_OFF:
-				// IT translates === to ^^^ when writing S3M files
-				// (and more importantly, we load ^^^ as === in adlib-channels)
-				out.note = 254;
-				b |= 32;
-				break;
-			default:
-				// Nothing (or garbage values)
-				out.note = 255;
-				break;
 			}
-
-			if (out.instrument != 0) {
-				if (song->samples[out.instrument].flags & CHN_ADLIB)
-					type = S3I_TYPE_ADMEL;
-				else if (song->samples[out.instrument].data != NULL)
-					type = S3I_TYPE_PCM;
-				else
-					type = S3I_TYPE_NONE;
-				if (type != S3I_TYPE_NONE) {
-					if (chantypes[chan] == S3I_TYPE_NONE
-					    || chantypes[chan] == S3I_TYPE_CONTROL) {
-						chantypes[chan] = type;
-					} else if (chantypes[chan] != type) {
-						warn |= 1 << WARN_PCMADLIBMIX;
-					}
+			else {
+				switch (out.note) {
+				case NOTE_CUT:
+				case NOTE_OFF:
+					// IT translates === to ^^^ when writing S3M files
+					// (and more importantly, we load ^^^ as === in adlib-channels)
+					out.note = 254;
+					b |= 32;
+					break;
+				default:
+					// Nothing (or garbage values)
+					out.note = 255;
+					break;
 				}
 
-				b |= 32;
-			}
+				if (out.instrument != 0) {
+					if (song->samples[out.instrument].flags & CHN_ADLIB)
+						type = S3I_TYPE_ADMEL;
+					else if (song->samples[out.instrument].data != NULL)
+						type = S3I_TYPE_PCM;
+					else
+						type = S3I_TYPE_NONE;
+					if (type != S3I_TYPE_NONE) {
+						if (chantypes[chan] == S3I_TYPE_NONE
+							|| chantypes[chan] == S3I_TYPE_CONTROL) {
+							chantypes[chan] = type;
+						}
+						else if (chantypes[chan] != type) {
+							warn |= 1 << WARN_PCMADLIBMIX;
+						}
+					}
 
-			switch (out.voleffect) {
-			case VOLFX_NONE:
-				break;
-			case VOLFX_VOLUME:
-				b |= 64;
-				break;
-			default:
-				warn |= 1 << WARN_VOLEFFECTS;
-				break;
+					b |= 32;
+				}
+
+				switch (out.voleffect) {
+				case VOLFX_NONE:
+					break;
+				case VOLFX_VOLUME:
+					b |= 64;
+					break;
+				default:
+					warn |= 1 << WARN_VOLEFFECTS;
+					break;
+				}
 			}
 
 			csf_export_s3m_effect(&out.effect, &out.param, 0);
@@ -862,7 +881,7 @@ static int fixup_chantypes(song_channel_t *channels, uint8_t *chantypes)
 
 int fmt_s3m_save_song(disko_t *fp, song_t *song)
 {
-	struct s3m_header hdr = {};
+	struct s3m_header hdr = { 0 };
 	int nord, nsmp, npat;
 	int n;
 	song_sample_t *smp;
@@ -874,7 +893,8 @@ int fmt_s3m_save_song(disko_t *fp, song_t *song)
 	uint32_t para_sdata[MAX_SAMPLES];
 	uint8_t chantypes[32];
 	unsigned int warn = 0;
-
+	int num_samples = 0;
+	int num_patterns = 0;
 
 	if (song->flags & SONG_INSTRUMENTMODE)
 		warn |= 1 << WARN_INSTRUMENTS;
@@ -890,13 +910,14 @@ int fmt_s3m_save_song(disko_t *fp, song_t *song)
 	// see note in IT writer -- shouldn't clamp here, but can't save more than we're willing to load
 	nord = CLAMP(nord, 2, MAX_ORDERS);
 
-	nsmp = csf_get_num_samples(song) ?: 1; // ST3 always saves one sample
+	num_samples = csf_get_num_samples(song);
+	nsmp = num_samples ? num_samples : 1; // ST3 always saves one sample
 	if (nsmp > 99) {
 		nsmp = 99;
 		warn |= 1 << WARN_MAXSAMPLES;
 	}
-
-	npat = csf_get_num_patterns(song) ?: 1; // ST3 always saves one pattern
+	num_patterns = csf_get_num_patterns(song);
+	npat = num_patterns ? num_patterns : 1; // ST3 always saves one pattern
 	if (npat > 100) {
 		npat = 100;
 		warn |= 1 << WARN_MAXPATTERNS;

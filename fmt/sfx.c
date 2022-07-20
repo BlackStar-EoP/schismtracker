@@ -56,7 +56,7 @@ int fmt_sfx_read_info(dmoz_file_t *file, const uint8_t *data, size_t length)
 		    && memcmp(data + sfxfmts[n].tagpos, sfxfmts[n].tag, 4) == 0) {
 			file->description = sfxfmts[n].id;
 			/*file->extension = str_dup("sfx");*/
-			file->title = strdup(""); // whatever
+			file->title = _strdup(""); // whatever
 			file->type = TYPE_MODULE_MOD;
 			return 1;
 		}

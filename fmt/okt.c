@@ -283,6 +283,7 @@ static uint32_t okt_read_pbod(song_t *song, slurp_t *fp, int nchn, int pat)
 						note->param &= 0xf; // D0x
 						break;
 					}
+					/* TODO BlackStar-EoP this one's a bit trickier due to the fallthrough*/
 					// 0x40 is set volume -- fall through
 				case 0 ... 3:
 					note->voleffect = VOLFX_VOLUME;

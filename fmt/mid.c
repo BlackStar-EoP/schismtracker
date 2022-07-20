@@ -118,7 +118,7 @@ int fmt_mid_read_info(dmoz_file_t *file, const uint8_t *data, size_t length)
 		return 0; // wahhhh
 	if (fmt_mid_load_song(tmpsong, &fp, LOAD_NOSAMPLES | LOAD_NOPATTERNS) == LOAD_SUCCESS) {
 		file->description = "Standard MIDI File";
-		file->title = strdup(tmpsong->title);
+		file->title = _strdup(tmpsong->title);
 		file->type = TYPE_MODULE_MOD;
 		csf_free(tmpsong);
 		return 1;
@@ -319,82 +319,98 @@ int fmt_mid_load_song(song_t *song, slurp_t *fp, unsigned int lflags)
 				// TODO pitch bend channel=lo lsb=x msb=y
 				continue;
 			case 0xf: // system messages
-				switch (lo) {
-				case 0xf: // meta-event (text and stuff)
-					x = slurp_getc(fp); // type
-					vlen = read_varlen(fp); // value length
-					switch (x) {
-					case 0x1: // text
-					case 0x2: // copyright
-					case 0x3: // track name
-					case 0x4: // instrument name
-					case 0x5: // lyric
-					case 0x6: // marker
-					case 0x7: // cue point
-						y = MIN(vlen, message_left ? message_left - 1 : 0);
-						slurp_read(fp, message_cur, y);
-						if (x == 3 && y && !song->title[0]) {
-							strncpy(song->title, message_cur, MIN(y, 25));
-							song->title[25] = '\0';
-						}
-						message_cur += y;
-						message_left -= y;
-						if (y && message_cur[-1] != '\n') {
-							*message_cur++ = '\n';
-							message_left--;
-						}
-						vlen -= y;
-						break;
-
-					case 0x20: // MIDI channel (FF 20 len* cc)
-						// specifies which midi-channel sysexes are assigned to
-					case 0x21: // MIDI port (FF 21 len* pp)
-						// specifies which port/bus this track's events are routed to
-						break;
-
-					case 0x2f:
-						found_end = 1;
-						break;
-					case 0x51: // set tempo
-						// read another stupid kind of variable length number
-						// hopefully this fits into 4 bytes - if not, too bad!
-						// (what is this? friggin' magic?)
-						memset(buf, 0, 4);
-						y = MIN(vlen, 4);
-						slurp_read(fp, buf + (4 - y), y);
-						bpm = buf[0] << 24 | (buf[1] << 16) | (buf[2] << 8) | buf[3];
-						bpm = CLAMP(60000000 / (bpm ?: 1), 0x20, 0xff);
-						note = (song_note_t) {.effect = FX_TEMPO, .param = bpm};
-						vlen -= y;
-						break;
-					case 0x54: // SMPTE offset (what time in the song this track starts)
-						// (what?!)
-						break;
-					case 0x58: // time signature (FF 58 len* nn dd cc bb)
-					case 0x59: // key signature (FF 59 len* sf mi)
-						// TODO care? don't care?
-						break;
-					case 0x7f: // some proprietary crap
-						break;
-
-					default:
-						// some mystery crap
-						log_appendf(2, " Unknown meta-event FF %02X", x);
-						break;
-					}
-					slurp_seek(fp, vlen, SEEK_CUR);
-					break;
-				case 0x0: // sysex
-				case 0x1 ... 0x7: // syscommon
+				/* BlackStar-EoP */
+				if (lo >= 0x0 && lo <= 0x7) // syscommon
 					rs = 0; // clear running status
-				case 0x8 ... 0xe: // sysrt
+				else if (lo >= 0x8 && lo <= 0xe) // sysrt
 					// 0xf0 - sysex
 					// 0xf1-0xf7 - common
 					// 0xf8-0xff - sysrt
 					// sysex and common cancel running status
 					// TODO handle these, or at least skip them coherently
 					continue;
+				else
+				{
+
+					switch (lo) {
+					case 0xf: // meta-event (text and stuff)
+						x = slurp_getc(fp); // type
+						vlen = read_varlen(fp); // value length
+						switch (x) {
+						case 0x1: // text
+						case 0x2: // copyright
+						case 0x3: // track name
+						case 0x4: // instrument name
+						case 0x5: // lyric
+						case 0x6: // marker
+						case 0x7: // cue point
+							y = MIN(vlen, message_left ? message_left - 1 : 0);
+							slurp_read(fp, message_cur, y);
+							if (x == 3 && y && !song->title[0]) {
+								strncpy(song->title, message_cur, MIN(y, 25));
+								song->title[25] = '\0';
+							}
+							message_cur += y;
+							message_left -= y;
+							if (y && message_cur[-1] != '\n') {
+								*message_cur++ = '\n';
+								message_left--;
+							}
+							vlen -= y;
+							break;
+
+						case 0x20: // MIDI channel (FF 20 len* cc)
+							// specifies which midi-channel sysexes are assigned to
+						case 0x21: // MIDI port (FF 21 len* pp)
+							// specifies which port/bus this track's events are routed to
+							break;
+
+						case 0x2f:
+							found_end = 1;
+							break;
+						case 0x51: // set tempo
+							// read another stupid kind of variable length number
+							// hopefully this fits into 4 bytes - if not, too bad!
+							// (what is this? friggin' magic?)
+							memset(buf, 0, 4);
+							y = MIN(vlen, 4);
+							slurp_read(fp, buf + (4 - y), y);
+							bpm = buf[0] << 24 | (buf[1] << 16) | (buf[2] << 8) | buf[3];
+							bpm = CLAMP(60000000 / (bpm ? bpm : 1), 0x20, 0xff);
+							note = (song_note_t){ .effect = FX_TEMPO, .param = bpm };
+							vlen -= y;
+							break;
+						case 0x54: // SMPTE offset (what time in the song this track starts)
+							// (what?!)
+							break;
+						case 0x58: // time signature (FF 58 len* nn dd cc bb)
+						case 0x59: // key signature (FF 59 len* sf mi)
+							// TODO care? don't care?
+							break;
+						case 0x7f: // some proprietary crap
+							break;
+
+						default:
+							// some mystery crap
+							log_appendf(2, " Unknown meta-event FF %02X", x);
+							break;
+						}
+						slurp_seek(fp, vlen, SEEK_CUR);
+						break;
+					/* BlackStar-EoP */
+					//case 0x0: // sysex
+					//case 0x1 ... 0x7: // syscommon
+					//	rs = 0; // clear running status
+					//case 0x8 ... 0xe: // sysrt
+					//	// 0xf0 - sysex
+					//	// 0xf1-0xf7 - common
+					//	// 0xf8-0xff - sysrt
+					//	// sysex and common cancel running status
+					//	// TODO handle these, or at least skip them coherently
+					//	continue;
+					}
 				}
+				
 			}
 
 			// skip past any events with a lower pulse count (from other channels)

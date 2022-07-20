@@ -153,6 +153,7 @@ int fmt_stm_load_song(song_t *song, slurp_t *fp, unsigned int lflags)
 	char id[8];
 	uint8_t tmp[4];
 	int npat, n;
+	int initial_speed = 0;
 
 	slurp_seek(fp, 20, SEEK_SET);
 	slurp_read(fp, id, 8);
@@ -180,7 +181,8 @@ int fmt_stm_load_song(song_t *song, slurp_t *fp, unsigned int lflags)
 	song->title[20] = '\0';
 	slurp_seek(fp, 12, SEEK_CUR); // skip the tag and stuff
 
-	song->initial_speed = (slurp_getc(fp) >> 4) ?: 1;
+	initial_speed = (slurp_getc(fp) >> 4);
+	song->initial_speed = initial_speed ? initial_speed : 1;
 	npat = slurp_getc(fp);
 	song->initial_global_volume = 2 * slurp_getc(fp);
 	slurp_seek(fp, 13, SEEK_CUR); // junk

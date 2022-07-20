@@ -29,7 +29,7 @@
 #include "fmt.h"
 
 #include <stdint.h>
-#include <unistd.h> /* swab */
+//#include <unistd.h> /* swab */
 #include <math.h> /* for ldexp/frexp */
 
 #ifdef WIN32
