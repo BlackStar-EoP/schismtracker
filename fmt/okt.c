@@ -277,33 +277,52 @@ static uint32_t okt_read_pbod(song_t *song, slurp_t *fp, int nchn, int pat)
 
 			case 31: // V Volume
 				note->effect = FX_VOLUMESLIDE;
-				switch (note->param >> 4) {
-				case 4:
+
+				//	/* BlackStar-EoP this one's a bit trickier due to the fallthrough*/
+				//switch (note->param >> 4) {
+				//case 4:
+				//	if (note->param != 0x40) {
+				//		note->param &= 0xf; // D0x
+				//		break;
+				//	}
+				//	// 0x40 is set volume -- fall through
+				//case 0 ... 3:
+				//	note->voleffect = VOLFX_VOLUME;
+				//	note->volparam = note->param;
+				//	note->effect = FX_NONE;
+				//	note->param = 0;
+				//	break;
+
+				if ((note->param >> 4) == 4) {
 					if (note->param != 0x40) {
 						note->param &= 0xf; // D0x
+					}
+					else {
+						if ((note->param >> 4) >= 0 && (note->param >> 4) <= 3) {
+							note->voleffect = VOLFX_VOLUME;
+							note->volparam = note->param;
+							note->effect = FX_NONE;
+							note->param = 0;
+						}
+					}
+				}
+				else {
+					switch (note->param >> 4) {
+					case 5:
+						note->param = (note->param & 0xf) << 4; // Dx0
+						break;
+					case 6:
+						note->param = 0xf0 | MIN(note->param & 0xf, 0xe); // DFx
+						break;
+					case 7:
+						note->param = (MIN(note->param & 0xf, 0xe) << 4) | 0xf; // DxF
+						break;
+					default:
+						// Junk.
+						note->effect = note->param = 0;
 						break;
 					}
-					/* TODO BlackStar-EoP this one's a bit trickier due to the fallthrough*/
-					// 0x40 is set volume -- fall through
-				case 0 ... 3:
-					note->voleffect = VOLFX_VOLUME;
-					note->volparam = note->param;
-					note->effect = FX_NONE;
-					note->param = 0;
-					break;
-				case 5:
-					note->param = (note->param & 0xf) << 4; // Dx0
-					break;
-				case 6:
-					note->param = 0xf0 | MIN(note->param & 0xf, 0xe); // DFx
-					break;
-				case 7:
-					note->param = (MIN(note->param & 0xf, 0xe) << 4) | 0xf; // DxF
-					break;
-				default:
-					// Junk.
-					note->effect = note->param = 0;
-					break;
+					
 				}
 				break;
 
